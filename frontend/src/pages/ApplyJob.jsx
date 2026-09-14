@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../api'
 
 function ApplyJob() {
   const { id } = useParams()
@@ -45,7 +46,7 @@ function ApplyJob() {
         setJobLoading(true)
 
         const response = await axios.get(
-          `http://localhost:5000/api/jobs/${id}`
+          `${API_URL}/api/jobs/${id}`
         )
 
         console.log('Apply job response:', response.data)
@@ -140,7 +141,7 @@ function ApplyJob() {
       applicationData.append('resume', resumeFile)
 
       const response = await axios.post(
-        'http://localhost:5000/api/applications',
+        `${API_URL}/api/applications`,
         applicationData,
         {
           headers: {

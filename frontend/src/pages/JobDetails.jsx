@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+
 import Navbar from '../components/Navbar'
+import API_URL from '../api'
 
 function JobDetails() {
   const { id } = useParams()
@@ -30,7 +32,7 @@ function JobDetails() {
         setLoading(true)
 
         const response = await axios.get(
-          `http://localhost:5000/api/jobs/${id}`
+          `${API_URL}/api/jobs/${id}`
         )
 
         console.log('Job details response:', response.data)
@@ -130,28 +132,36 @@ function JobDetails() {
 
           <div className="job-details-header">
             <h1>{job.title}</h1>
+
             <h2>{job.company}</h2>
           </div>
 
           {/* Job Information */}
 
           <div className="job-info">
-
             <div className="job-info-item">
               <span>Location</span>
-              <strong>{job.location}</strong>
+
+              <strong>
+                {job.location}
+              </strong>
             </div>
 
             <div className="job-info-item">
               <span>Job Type</span>
-              <strong>{job.type}</strong>
+
+              <strong>
+                {job.type}
+              </strong>
             </div>
 
             <div className="job-info-item">
               <span>Salary</span>
-              <strong>{job.salary}</strong>
-            </div>
 
+              <strong>
+                {job.salary}
+              </strong>
+            </div>
           </div>
 
           {/* Description */}

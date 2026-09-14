@@ -8,6 +8,7 @@ import {
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import API_URL from './api'
 
 import Jobs from './pages/Jobs'
 import JobDetails from './pages/JobDetails'
@@ -76,7 +77,7 @@ function Home() {
         setJobsLoading(true)
 
         const response = await axios.get(
-          'http://localhost:5000/api/jobs'
+          `${API_URL}/api/jobs`
         )
 
         if (Array.isArray(response.data)) {
