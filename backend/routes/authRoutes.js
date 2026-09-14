@@ -162,9 +162,13 @@ router.post('/forgot-password', async (req, res) => {
 
     await user.save()
 
-    // Development only
-    // In production, this URL should be sent through email.
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`
+    // Create reset URL
+    // Uses Vercel URL in production through FRONTEND_URL
+    // Falls back to localhost for local development
+    const frontendUrl =
+      process.env.FRONTEND_URL || 'http://localhost:5173'
+
+    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`
 
     console.log('Password reset URL:', resetUrl)
 
@@ -172,7 +176,7 @@ router.post('/forgot-password', async (req, res) => {
       message:
         'If an account exists with this email, a password reset link will be sent.',
 
-      // Development only
+      // Development/testing only
       resetUrl
     })
   } catch (error) {
@@ -239,7 +243,6 @@ router.post('/reset-password/:token', async (req, res) => {
     user.resetPasswordToken = null
     user.resetPasswordExpires = null
 
-    // Save changes
     await user.save()
 
     res.json({
