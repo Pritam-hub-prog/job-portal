@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../api'
 
 function Login() {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ function Login() {
       setLoading(true)
 
       const response = await axios.post(
-        'http://https://job-portal-p5o9.onrender.com/api/auth/login',
+        `${API_URL}/api/auth/login`,
         {
           email: formData.email,
           password: formData.password
@@ -52,7 +53,6 @@ function Login() {
         JSON.stringify(response.data.user)
       )
 
-
       /* =========================================
          ROLE BASED LOGIN MESSAGE
          ========================================= */
@@ -61,43 +61,33 @@ function Login() {
         response.data.user.role === 'recruiter'
       ) {
         alert('Login successful recruiter')
-
         navigate('/recruiter-home')
       } else {
         alert('Login successful')
-
         navigate('/')
       }
 
     } catch (error) {
-
       console.log(
         'Login error:',
         error
       )
 
       if (error.response) {
-
         alert(
           error.response.data.message ||
             'Invalid email or password'
         )
-
       } else {
-
         alert(
           'Unable to connect to server. Please make sure the backend is running.'
         )
-
       }
 
     } finally {
-
       setLoading(false)
-
     }
   }
-
 
   return (
     <div>
@@ -216,9 +206,11 @@ function Login() {
               className="apply-button"
               disabled={loading}
             >
+
               {loading
                 ? 'Logging in...'
                 : 'Login'}
+
             </button>
 
           </form>
@@ -229,7 +221,6 @@ function Login() {
           <div className="auth-footer">
 
             <p>
-
               Don't have an account?{' '}
 
               <Link to="/signup">
