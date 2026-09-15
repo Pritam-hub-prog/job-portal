@@ -15,7 +15,7 @@ function Companies() {
     const fetchCompanies = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/api/jobs/companies'
+          'http://https://job-portal-p5o9.onrender.com/api/jobs/companies'
         )
 
         console.log('Companies response:', response.data)

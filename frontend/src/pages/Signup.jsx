@@ -35,7 +35,7 @@ function Signup() {
       setLoading(true)
 
       const response = await axios.post(
-        'http://localhost:5000/api/auth/signup',
+        'http://https://job-portal-p5o9.onrender.com/api/auth/signup',
         {
           name: formData.name,
           email: formData.email,

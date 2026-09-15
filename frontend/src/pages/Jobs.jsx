@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
+import API_URL from '../api'
 
 function Jobs() {
   const [jobs, setJobs] = useState([])
@@ -34,7 +35,7 @@ function Jobs() {
         setLoading(true)
 
         const response = await axios.get(
-          'http://localhost:5000/api/jobs'
+          `${API_URL}/api/jobs`
         )
 
         console.log('Jobs response:', response.data)
@@ -234,7 +235,6 @@ function Jobs() {
               <div className="jobs-container">
 
                 {filteredJobs.map((job) => (
-
                   <div
                     className="job-card"
                     key={job._id}
@@ -265,9 +265,7 @@ function Jobs() {
                     <Link
                       to={`/jobs/${job._id}`}
                     >
-                      <button
-                        type="button"
-                      >
+                      <button type="button">
                         View Job
                       </button>
                     </Link>
@@ -288,7 +286,6 @@ function Jobs() {
                     )}
 
                   </div>
-
                 ))}
 
               </div>
