@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../api'
 
 function Signup() {
   const navigate = useNavigate()
@@ -35,7 +36,7 @@ function Signup() {
       setLoading(true)
 
       const response = await axios.post(
-        'http://https://job-portal-p5o9.onrender.com/api/auth/signup',
+        `${API_URL}/api/auth/signup`,
         {
           name: formData.name,
           email: formData.email,
@@ -48,7 +49,6 @@ function Signup() {
 
       // Go to login page after successful signup
       navigate('/login')
-
     } catch (error) {
       if (error.response) {
         alert(error.response.data.message)
@@ -76,7 +76,6 @@ function Signup() {
 
       <main className="auth-page">
         <div className="auth-card">
-
           <h1>Create Account</h1>
 
           <p className="auth-description">
@@ -84,7 +83,6 @@ function Signup() {
           </p>
 
           <form onSubmit={handleSubmit}>
-
             <div className="form-group">
               <label htmlFor="name">Full Name *</label>
 
@@ -161,7 +159,6 @@ function Signup() {
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
-
           </form>
 
           <div className="auth-footer">
@@ -170,7 +167,6 @@ function Signup() {
               <Link to="/login">Login</Link>
             </p>
           </div>
-
         </div>
       </main>
     </div>
