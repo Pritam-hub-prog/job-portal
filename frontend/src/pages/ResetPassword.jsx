@@ -39,7 +39,7 @@ function ResetPassword() {
       setLoading(true)
 
       const response = await axios.post(
-        `http://https://job-portal-p5o9.onrender.com/api/auth/reset-password/${token}`,
+        `https://job-portal-p5o9.onrender.com/api/auth/reset-password/${token}`,
         {
           password: formData.password
         }

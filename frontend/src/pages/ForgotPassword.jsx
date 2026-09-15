@@ -15,7 +15,7 @@ function ForgotPassword() {
       setResetUrl('')
 
       const response = await axios.post(
-        'http://https://job-portal-p5o9.onrender.com/api/auth/forgot-password',
+        'https://job-portal-p5o9.onrender.com/api/auth/forgot-password',
         { email }
       )
 

@@ -37,7 +37,7 @@ function RecruiterHome() {
         }
 
         const response = await axios.get(
-          'http://https://job-portal-p5o9.onrender.com/api/jobs/my-jobs',
+          'https://job-portal-p5o9.onrender.com/api/jobs/my-jobs',
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -97,7 +97,7 @@ function RecruiterHome() {
         }
 
         const response = await axios.get(
-          'http://https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
+          'https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
           {
             headers: {
               Authorization: `Bearer ${token}`

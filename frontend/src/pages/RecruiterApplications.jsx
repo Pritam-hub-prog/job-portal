@@ -38,7 +38,7 @@ function RecruiterApplications() {
 
       try {
         const response = await axios.get(
-          'http://https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
+          'https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -86,7 +86,7 @@ function RecruiterApplications() {
       setUpdatingId(applicationId)
 
       const response = await axios.put(
-        `http://https://job-portal-p5o9.onrender.com/api/applications/status/${applicationId}`,
+        `https://job-portal-p5o9.onrender.com/api/applications/status/${applicationId}`,
         {
           status: newStatus
         },
@@ -164,7 +164,7 @@ function RecruiterApplications() {
 
     const cleanPath = resumePath.replace(/^\/+/, '')
 
-    return `http://https://job-portal-p5o9.onrender.com/${cleanPath}`
+    return `https://job-portal-p5o9.onrender.com/${cleanPath}`
   }
 
   return (

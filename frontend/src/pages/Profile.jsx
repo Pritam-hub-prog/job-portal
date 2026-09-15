@@ -39,7 +39,7 @@ function Profile() {
         }
 
         const response = await axios.get(
-          'http://https://job-portal-p5o9.onrender.com/api/profile',
+          'https://job-portal-p5o9.onrender.com/api/profile',
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -103,7 +103,7 @@ function Profile() {
       setSaving(true)
 
       const response = await axios.put(
-        'http://https://job-portal-p5o9.onrender.com/api/profile',
+        'https://job-portal-p5o9.onrender.com/api/profile',
         {
           name: formData.name,
           phone: formData.phone,

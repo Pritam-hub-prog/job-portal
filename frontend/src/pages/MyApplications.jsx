@@ -24,7 +24,7 @@ function MyApplications() {
 
       try {
         const response = await axios.get(
-          'http://https://job-portal-p5o9.onrender.com/api/applications/my-applications',
+          'https://job-portal-p5o9.onrender.com/api/applications/my-applications',
           {
             headers: {
               Authorization: `Bearer ${token}`

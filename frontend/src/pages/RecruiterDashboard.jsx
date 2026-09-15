@@ -76,7 +76,7 @@ function RecruiterDashboard() {
       setJobsLoading(true)
 
       const response = await axios.get(
-        'http://https://job-portal-p5o9.onrender.com/api/jobs/my-jobs',
+        'https://job-portal-p5o9.onrender.com/api/jobs/my-jobs',
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -105,7 +105,7 @@ function RecruiterDashboard() {
       setApplicationsLoading(true)
 
       const response = await axios.get(
-        'http://https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
+        'https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -165,7 +165,7 @@ function RecruiterDashboard() {
 
       if (editingJobId) {
         response = await axios.put(
-          `http://https://job-portal-p5o9.onrender.com/api/jobs/${editingJobId}`,
+          `https://job-portal-p5o9.onrender.com/api/jobs/${editingJobId}`,
           formData,
           {
             headers: {
@@ -175,7 +175,7 @@ function RecruiterDashboard() {
         )
       } else {
         response = await axios.post(
-          'http://https://job-portal-p5o9.onrender.com/api/jobs',
+          'https://job-portal-p5o9.onrender.com/api/jobs',
           formData,
           {
             headers: {
@@ -269,7 +269,7 @@ function RecruiterDashboard() {
 
     try {
       const response = await axios.delete(
-        `http://https://job-portal-p5o9.onrender.com/api/jobs/${jobId}`,
+        `https://job-portal-p5o9.onrender.com/api/jobs/${jobId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
