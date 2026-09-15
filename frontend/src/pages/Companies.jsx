@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
+import API_URL from '../api'
 
 function Companies() {
   const [companies, setCompanies] = useState([])
@@ -14,13 +15,21 @@ function Companies() {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
+        setLoading(true)
+
         const response = await axios.get(
-          'http://https://job-portal-p5o9.onrender.com/api/jobs/companies'
+          `${API_URL}/api/jobs/companies`
         )
 
         console.log('Companies response:', response.data)
 
-        setCompanies(response.data || [])
+        if (Array.isArray(response.data)) {
+          setCompanies(response.data)
+        } else if (Array.isArray(response.data.companies)) {
+          setCompanies(response.data.companies)
+        } else {
+          setCompanies([])
+        }
       } catch (error) {
         console.log('Error fetching companies:', error)
         setCompanies([])
@@ -35,20 +44,15 @@ function Companies() {
   return (
     <div>
       {/* Navbar */}
-
       <Navbar />
 
       {/* Companies Page */}
-
       <main className="companies-page">
         <div className="companies-container">
 
           {/* Header */}
-
           <div className="companies-header">
-            <h1>
-              Companies
-            </h1>
+            <h1>Companies</h1>
 
             <p>
               Explore companies hiring on JobPortal
@@ -57,16 +61,13 @@ function Companies() {
           </div>
 
           {/* Companies Content */}
-
           {loading ? (
             <div className="companies-message">
               Loading companies...
             </div>
           ) : companies.length === 0 ? (
             <div className="companies-message">
-              <h2>
-                No Companies Available
-              </h2>
+              <h2>No Companies Available</h2>
 
               <p>
                 There are no companies with active
@@ -83,7 +84,6 @@ function Companies() {
                 >
 
                   {/* Company Icon */}
-
                   <div className="company-icon">
                     {company.name
                       ?.charAt(0)
@@ -91,30 +91,27 @@ function Companies() {
                   </div>
 
                   {/* Company Name */}
-
-                  <h2>
-                    {company.name}
-                  </h2>
+                  <h2>{company.name}</h2>
 
                   {/* Location */}
-
                   <p className="company-location">
-                    {company.location}
+                    {company.location || 'Location not available'}
                   </p>
 
                   {/* Number of Jobs */}
-
                   <p className="company-jobs">
-                    {company.jobs}{' '}
+                    {company.jobs || 0}{' '}
                     {company.jobs === 1
                       ? 'job available'
                       : 'jobs available'}
                   </p>
 
                   {/* View Jobs */}
-
                   <Link to="/jobs">
-                    <button className="view-job-button">
+                    <button
+                      type="button"
+                      className="view-job-button"
+                    >
                       View Jobs
                     </button>
                   </Link>
@@ -129,7 +126,6 @@ function Companies() {
       </main>
 
       {/* Footer */}
-
       <footer className="footer">
         <p>
           © 2026 JobPortal. All rights reserved.
