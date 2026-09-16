@@ -1,37 +1,32 @@
 const express = require('express')
 const multer = require('multer')
 const path = require('path')
-const fs = require('fs')
+const cloudinary = require('cloudinary').v2
 
 const Application = require('../models/Application')
 const Job = require('../models/Job')
-
 const protect = require('../middleware/authMiddleware')
 const roleMiddleware = require('../middleware/roleMiddleware')
 
 const router = express.Router()
 
 // ==============================
+// Cloudinary Configuration
+// ==============================
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+// ==============================
 // Multer Configuration
 // ==============================
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/')
-  },
-
-  filename: (req, file, cb) => {
-    const extension = path
-      .extname(file.originalname)
-      .toLowerCase()
-
-    const uniqueName = `${Date.now()}-${Math.round(
-      Math.random() * 1e9
-    )}${extension}`
-
-    cb(null, uniqueName)
-  }
-})
+// Store uploaded file temporarily in memory
+// before sending it to Cloudinary.
+const storage = multer.memoryStorage()
 
 // Only allow PDF files
 const fileFilter = (req, file, cb) => {
@@ -84,15 +79,13 @@ router.post(
 
   async (req, res) => {
     try {
+      // ==========================================
       // Find the job using MongoDB _id
+      // ==========================================
+
       const job = await Job.findById(req.body.jobId)
 
       if (!job) {
-        // Delete uploaded file if job does not exist
-        if (req.file) {
-          fs.unlinkSync(req.file.path)
-        }
-
         return res.status(404).json({
           message: 'Job not found'
         })
@@ -109,29 +102,60 @@ router.post(
         })
 
       if (existingApplication) {
-        // Delete newly uploaded file because application
-        // already exists
-        if (req.file) {
-          fs.unlinkSync(req.file.path)
-        }
-
         return res.status(400).json({
-          message:
-            'You have already applied for this job'
+          message: 'You have already applied for this job'
         })
       }
 
+      // ==========================================
       // Get the recruiter from the job
+      // ==========================================
+
       const recruiterId = job.recruiter
 
       // ==========================================
-      // Resume Path
+      // Upload Resume to Cloudinary
       // ==========================================
 
-      let resumePath = ''
+      let resumeUrl = ''
 
       if (req.file) {
-        resumePath = `/uploads/${req.file.filename}`
+        const extension = path
+          .extname(req.file.originalname)
+          .toLowerCase()
+
+        const uniqueName = `${Date.now()}-${Math.round(
+          Math.random() * 1e9
+        )}${extension}`
+
+        const cloudinaryResult = await new Promise(
+          (resolve, reject) => {
+            const uploadStream =
+              cloudinary.uploader.upload_stream(
+                {
+                  resource_type: 'raw',
+                  folder: 'job-portal/resumes',
+                  public_id: uniqueName
+                },
+                (error, result) => {
+                  if (error) {
+                    reject(error)
+                  } else {
+                    resolve(result)
+                  }
+                }
+              )
+
+            uploadStream.end(req.file.buffer)
+          }
+        )
+
+        resumeUrl = cloudinaryResult.secure_url
+
+        console.log(
+          'Resume uploaded to Cloudinary:',
+          resumeUrl
+        )
       }
 
       // ==========================================
@@ -150,8 +174,8 @@ router.post(
         // Make sure the correct job ID is stored
         jobId: job._id,
 
-        // Save uploaded resume path
-        resume: resumePath
+        // Save Cloudinary resume URL
+        resume: resumeUrl
       })
 
       res.status(201).json({
@@ -160,17 +184,6 @@ router.post(
       })
     } catch (error) {
       console.log(error)
-
-      // Delete uploaded file if database operation fails
-      if (req.file) {
-        try {
-          fs.unlinkSync(req.file.path)
-        } catch (deleteError) {
-          console.log(
-            'Failed to delete uploaded file'
-          )
-        }
-      }
 
       res.status(500).json({
         message: 'Failed to submit application',
