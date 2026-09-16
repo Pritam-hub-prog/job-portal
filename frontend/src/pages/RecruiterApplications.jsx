@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
+import API_URL from '../api'
 
 function RecruiterApplications() {
   const navigate = useNavigate()
@@ -38,7 +39,7 @@ function RecruiterApplications() {
 
       try {
         const response = await axios.get(
-          'https://job-portal-p5o9.onrender.com/api/applications/recruiter-applications',
+          `${API_URL}/api/applications/recruiter-applications`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -86,7 +87,7 @@ function RecruiterApplications() {
       setUpdatingId(applicationId)
 
       const response = await axios.put(
-        `https://job-portal-p5o9.onrender.com/api/applications/status/${applicationId}`,
+        `${API_URL}/api/applications/status/${applicationId}`,
         {
           status: newStatus
         },
@@ -162,9 +163,18 @@ function RecruiterApplications() {
       return ''
     }
 
+    // Cloudinary URL
+    if (
+      resumePath.startsWith('http://') ||
+      resumePath.startsWith('https://')
+    ) {
+      return resumePath
+    }
+
+    // Old local Render upload path
     const cleanPath = resumePath.replace(/^\/+/, '')
 
-    return `https://job-portal-p5o9.onrender.com/${cleanPath}`
+    return `${API_URL}/${cleanPath}`
   }
 
   return (
